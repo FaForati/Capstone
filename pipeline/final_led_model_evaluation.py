@@ -17,19 +17,20 @@ from sklearn.metrics import (
 # =========================
 # CONFIG (PUT YOUR BEST HERE)
 # =========================
-DATA_CSV = r"C:\HSI_Data\DOI-10-13012-b2idb-8141497_v1\spectra and reference parameters.csv"
+DATA_CSV = r"C:\HSI_Data\DOI-10-13012-b2idb-8141497_v1\spectra and reference parameters.csv"#r"C:\HSI_Data\InHouseData\train.csv"
 
-BEST_WAVELENGTHS = [530, 610, 670, 950]  
+BEST_WAVELENGTHS = [530, 610, 670, 950]  # [530, 610, 670, 950]
 FWHM = 30
-
+    
 # =========================
 # LOAD DATA
 # =========================
 df = pd.read_csv(DATA_CSV)
-
 df["label"] = df["Fertility status"].map({
     "Fertile": 1,
-    "Infertile": 0
+    "Infertile": 0,
+    1: 1,
+    0: 0
 })
 
 df = df.dropna(subset=["label"])
@@ -37,7 +38,6 @@ df = df.dropna(subset=["label"])
 # Extract spectral columns
 spectral_cols = [col for col in df.columns if "nm" in col or col.replace('.', '', 1).isdigit()]
 wavelengths = np.array([float(col.replace("nm", "")) for col in spectral_cols])
-
 X_spectrum = df[spectral_cols].values
 y = df["label"].values
 

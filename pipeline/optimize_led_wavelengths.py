@@ -10,12 +10,12 @@ from sklearn.metrics import roc_auc_score, balanced_accuracy_score
 # =========================
 # CONFIG
 # =========================
-DATA_CSV = r"C:\HSI_Data\DOI-10-13012-b2idb-8141497_v1\spectra and reference parameters.csv"
+DATA_CSV = r"C:\HSI_Data\InHouseData\InHouse_fertility_data.csv"#r"C:\HSI_Data\DOI-10-13012-b2idb-8141497_v1\spectra and reference parameters.csv"
 
 # Candidate wavelengths (reduce search space for speed)
-CANDIDATE_WAVELENGTHS = np.arange(374, 1015, 20)  # 450–950 nm every 20 nm
+CANDIDATE_WAVELENGTHS = np.arange(450, 970, 20)  # 450–950 nm every 20 nm
 
-NUM_LEDS_LIST = [3, 4, 5]
+NUM_LEDS_LIST = [6] #3,4, 5,
 FWHM = 30
 
 # =========================
@@ -25,7 +25,9 @@ df = pd.read_csv(DATA_CSV)
 
 df["label"] = df["Fertility status"].map({
     "Fertile": 1,
-    "Infertile": 0
+    "Infertile": 0,
+    1: 1,
+    0: 0
 })
 
 df = df.dropna(subset=["label"])
@@ -140,7 +142,7 @@ except:
     print("Search interrupted. Saving results so far...")
     results_df = pd.DataFrame(results).sort_values(by="auc_mean", ascending=False)
 
-    results_df.to_csv("partial_optimized_led_wavelengths.csv", index=False)
+    results_df.to_csv("partial_optimized_led_wavelengths_6_20_30.csv", index=False)
 
     print("\n=== TOP RESULTS ===")
     print(results_df.head(10))
@@ -149,7 +151,7 @@ except:
 # =========================
 results_df = pd.DataFrame(results).sort_values(by="auc_mean", ascending=False)
 
-results_df.to_csv("optimized_led_wavelengths.csv", index=False)
+results_df.to_csv("optimized_led_wavelengths_6_20_30.csv", index=False)
 
 print("\n=== TOP RESULTS ===")
 print(results_df.head(10))
